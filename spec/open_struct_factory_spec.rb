@@ -85,7 +85,7 @@ describe OpenStructFactory do
         }
       end
 
-      it "creates a nested OpenStruct " do
+      it "creates a nested OpenStruct" do
         os = OpenStructFactory.create(hash)
         expect(os.foo[0].bar).to eq(1)
         expect(os.foo[1].baz.qux).to eq(true)
