@@ -93,6 +93,26 @@ describe OpenStructFactory do
 
     end
 
+    context "when given a block" do
+
+      let(:hash) do
+        {
+          "FOO" => 123,
+          "Bar" => {
+            "BAZ" => {
+              "qux" => true
+            }
+          }
+        }
+      end
+
+      it "creates a nested OpenStruct with property names processed by the given block" do
+        os = OpenStructFactory.create(hash) { |property_name| property_name.downcase }
+        expect(os.foo).to eq(123)
+        expect(os.bar.baz.qux).to eq(true)
+      end
+    end
+
   end # .create
 
 end

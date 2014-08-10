@@ -51,6 +51,21 @@ puts book.publications[1].year
 
 ```
 
+A block can optionally be passed, it will be called for each key and give you the opportunity to sanitize the property name to be added to the `OpenStruct`:
+
+```ruby
+
+data = {
+  "SomePeople" => "LoveTheirCamelCase",
+}
+
+obj = OpenStructFactory.create(data) { |key| key.downcase }
+
+puts obj.somepeople
+# => LoveTheirCamelCase
+
+```
+
 
 ## Contributing
 
