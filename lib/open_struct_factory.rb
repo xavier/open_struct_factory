@@ -2,7 +2,11 @@ require "open_struct_factory/version"
 
 module OpenStructFactory
 
-  def self.create(hash, &block)
+  # Creates an OpenStruct from the given hash
+  # * It recursively transform nested hashes into OpenStruct
+  # * It recursively goes through arrays, transforming hashes into OpenStruct
+  # * An optional block can be passed to process the hash keys
+  def self.create(hash, &block) # :yields: key
     properties = {}
     hash.each do |key, value|
       property_name = block_given? ? (yield key) : key
