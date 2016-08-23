@@ -8,7 +8,7 @@ module OpenStructFactory
   # * An optional block can be passed to process the hash keys
   def self.create(hash, &block) # :yields: key
     properties = {}
-    hash.each do |key, value|
+    hash.each_pair do |key, value|
       property_name = block_given? ? (yield key) : key
       properties[property_name] = process_value(value, &block)
     end
@@ -18,13 +18,13 @@ module OpenStructFactory
   private
 
   def self.process_value(value, &block)
-    case value
-    when Hash
+    case
+    when value.respond_to?(:each_pair)
      create(value, &block)
-    when Array
+    when value.is_a?(Array)
       value.map { |v| process_value(v, &block) }
     else
-       value
+      value
     end
   end
 

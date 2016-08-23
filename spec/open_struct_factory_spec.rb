@@ -93,6 +93,35 @@ describe OpenStructFactory do
 
     end
 
+    context "when given an non-Hash object responding to each_pair" do
+
+      class ActionControllerParameters
+
+        def initialize(bar, baz)
+          @bar = bar
+          @baz = baz
+        end
+
+        def each_pair(&block)
+          [[:bar, @bar], [:baz, @baz]].each(&block)
+        end
+
+      end
+
+      let(:hash) do
+        {
+          :foo => ActionControllerParameters.new(123, ActionControllerParameters.new("abc", "xyz")),
+        }
+      end
+
+      it "treats it like a hash" do
+        os = OpenStructFactory.create(hash)
+        expect(os.foo.bar).to eq(123)
+        expect(os.foo.baz.bar).to eq("abc")
+        expect(os.foo.baz.baz).to eq("xyz")
+      end
+    end
+
     context "when given a block" do
 
       let(:hash) do
